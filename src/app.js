@@ -1,24 +1,37 @@
 const express = require("express");
+const { connectDB } = require("./config/database");
+
+const User = require("./models/user");
 
 const app = express();
 
-app.get("/getUserData", (req, res) => {
-  //   try {
-  //     throw new Error("Something went wrong!");
-  //   } catch (error) {
-  console.error(error);
-  res.status(500).send("Internal Server Error");
-  // }
-  //res.send("User data");
-});
-
-app.use("/", (err, req, res, next) => {
-  if (err) {
-    console.error(err.stack);
-    res.status(500).send("Internal Server Error from error handler");
+app.post("/signup", async (req, res) => {
+  // create a new user document and save it to the database
+  const user = new User({
+    firstName: "Sachin",
+    lastName: "Tendulkar",
+    email: "sachin@gmail.com",
+    password: "sachin123",
+    age: 45,
+    gender: "Male",
+  });
+  try {
+    await user.save();
+    res.send("User created successfully");
+  } catch (err) {
+    console.error("Error creating user", err);
+    res.status(400).send("Internal Server Error");
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+connectDB()
+  .then(() => {
+    console.log("Connected to MongoDB");
+
+    app.listen(3000, () => {
+      console.log("Server is running on port 3000");
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB", err);
+  });
