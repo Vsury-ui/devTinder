@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
+      enum: {
+        values: ["male", "female", "other"],
+        message: `{VALUE} is incorrect status types`,
+      },
       validate(value) {
         if (["male", "female", "other"].indexOf(value) === -1) {
           throw new Error("Gender must be either male, female or other");
