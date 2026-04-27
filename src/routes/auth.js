@@ -28,8 +28,14 @@ authRouter.post("/signup", async (req, res) => {
     if (user.photoUrl && !user.photoUrl.startsWith("http")) {
       throw new Error("Photo URL must be a valid URL");
     }
-    await user.save();
-    res.send("User created successfully");
+    const savedUser = await user.save();
+
+    const token = await savedUser.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    }); // Set cookie to expire in 7 days
+    res.json({ message: "User created successfully", data: savedUser });
   } catch (err) {
     console.error("Error creating user", err);
     res.status(400).send("ERROR: " + err.message);

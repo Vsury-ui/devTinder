@@ -24,8 +24,9 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
         "firstName lastName age gender about skills photoUrl",
       );
     if (connectionRequests.length === 0) {
-      return res.status(400).json({
+      return res.json({
         message: "No pending connection requests found for the user.",
+        data: [],
       });
     }
     res.json({
