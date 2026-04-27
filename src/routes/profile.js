@@ -33,7 +33,7 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
       data: loggedInUser,
     });
   } catch (err) {
-    res.send("Update failed: " + err.message);
+    res.status(400).send("Update failed: " + err.message);
   }
 });
 

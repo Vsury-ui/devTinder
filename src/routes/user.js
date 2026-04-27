@@ -19,7 +19,10 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
         toUserId: loggedInUserId,
         status: "interested",
       })
-      .populate("fromUserId", "firstName lastName age gender about skills");
+      .populate(
+        "fromUserId",
+        "firstName lastName age gender about skills photoUrl",
+      );
     if (connectionRequests.length === 0) {
       return res.status(400).json({
         message: "No pending connection requests found for the user.",

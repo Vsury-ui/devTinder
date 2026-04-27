@@ -4,12 +4,19 @@ const { connectDB } = require("./config/database");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 const { userAuth } = require("./middlewares/auth");
 
 const User = require("./models/user");
 
 const app = express();
 //express middleware to parse JSON request bodies
+app.use(
+  cors({
+    origin: "http://localhost:5174",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(cookieParser());
 
