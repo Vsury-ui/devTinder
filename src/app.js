@@ -11,6 +11,8 @@ const User = require("./models/user");
 
 require("dotenv").config();
 
+require("./utils/cronjob");
+
 const app = express();
 //express middleware to parse JSON request bodies
 app.use(
