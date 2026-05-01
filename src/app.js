@@ -9,6 +9,8 @@ const { userAuth } = require("./middlewares/auth");
 
 const User = require("./models/user");
 
+require("dotenv").config();
+
 const app = express();
 //express middleware to parse JSON request bodies
 app.use(
@@ -40,8 +42,8 @@ connectDB()
   .then(() => {
     console.log("Connected to MongoDB");
 
-    app.listen(3000, () => {
-      console.log("Server is running on port 3000");
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is running on port ${process.env.PORT}`);
     });
   })
   .catch((err) => {
