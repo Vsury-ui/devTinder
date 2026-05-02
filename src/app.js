@@ -8,6 +8,7 @@ const cors = require("cors");
 const { userAuth } = require("./middlewares/auth");
 
 const User = require("./models/user");
+const http = require("http");
 
 require("dotenv").config();
 
@@ -29,12 +30,15 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/requests");
 const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
+const initializeSocket = require("./utils/socket");
+const chatRouter = require("./routes/chat");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 app.use("/", paymentRouter);
+app.use("/", chatRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -42,11 +46,15 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
+const server = http.createServer(app);
+
+initializeSocket(server);
+
 connectDB()
   .then(() => {
     console.log("Connected to MongoDB");
 
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log(`Server is running on port ${process.env.PORT}`);
     });
   })
