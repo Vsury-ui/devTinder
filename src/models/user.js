@@ -73,6 +73,17 @@ const userSchema = new mongoose.Schema(
       type: [String],
       array: true,
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    membershipType: {
+      type: String,
+      enum: {
+        values: ["silver", "gold"],
+        message: `{VALUE} is incorrect status types`,
+      },
+    },
   },
   { timestamps: true },
 );
